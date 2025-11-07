@@ -1,1 +1,92 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles with light/dark theme support */
+
+:root {
+  /* Light theme colors */
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-card-bg: #ffffff;
+  --color-input-bg: #ffffff;
+  
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-alpha: rgba(59, 130, 246, 0.1);
+  
+  --color-button-text: #ffffff;
+  
+  --color-error: #ef4444;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-text: #991b1b;
+  
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  
+  --color-skeleton-base: #f3f4f6;
+  --color-skeleton-highlight: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme colors */
+    --color-bg: #0f172a;
+    --color-text: #f1f5f9;
+    --color-text-muted: #94a3b8;
+    --color-border: #334155;
+    --color-card-bg: #1e293b;
+    --color-input-bg: #1e293b;
+    
+    --color-primary: #60a5fa;
+    --color-primary-hover: #3b82f6;
+    --color-primary-alpha: rgba(96, 165, 250, 0.15);
+    
+    --color-button-text: #0f172a;
+    
+    --color-error: #f87171;
+    --color-error-bg: #1e1b1b;
+    --color-error-border: #3f2020;
+    --color-error-text: #fca5a5;
+    
+    --color-shadow: rgba(0, 0, 0, 0.3);
+    
+    --color-skeleton-base: #1e293b;
+    --color-skeleton-highlight: #334155;
+  }
+}
+
+/* CSS reset and base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family:  'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: #1d1d1f;
+  background-color: #f5f5f7;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Focus visible styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,0 +1,64 @@
+<main class="home">
+  <div class="home__container">
+    <header class="home__header">
+      <h1 class="home__title">WikiJokes</h1>
+    </header>
+
+    <div class="home__search-wrapper">
+      <app-search-bar
+        [placeholder]="'find a joke'"
+        [label]="i18n.t().search.label"
+        [disabled]="loading()"
+        (search)="onSearch($event)"
+      />
+    </div>
+
+    @if (error()) {
+      <app-error-banner
+        [message]="error()!"
+        [retryText]="i18n.t().error.retry"
+        (retry)="onRetry()"
+      />
+    }
+
+    @if (loading()) {
+      <app-loading-skeleton
+        [count]="10"
+        [message]="i18n.t().loading.message"
+      />
+    } @else if (jokes().length === 0 && !error()) {
+      <app-empty-state
+        [title]="i18n.t().empty.title"
+        [message]="i18n.t().empty.message"
+      />
+    } @else if (jokes().length > 0) {
+      <div class="home__results">
+        <h2
+          #resultsHeading
+          class="home__results-heading"
+          tabindex="-1"
+        >
+          {{ i18n.t().home.resultsHeading }}
+        </h2>
+        <div class="home__jokes">
+          @for (joke of jokes(); track trackByJokeId($index, joke)) {
+            <article class="joke-card">
+              @if (joke.type === 'single') {
+                <p class="joke-card__content">{{ getJokeContent(joke) }}</p>
+              } @else if (joke.type === 'twopart') {
+                <div class="joke-card__twopart">
+                  <p class="joke-card__setup">{{ getJokeSetup(joke) }}</p>
+                  <p class="joke-card__delivery">{{ getJokeDelivery(joke) }}</p>
+                </div>
+              }
+              <div class="joke-card__tags">
+                <span class="joke-card__tag">{{ joke.type }}</span>
+                <span class="joke-card__tag">{{ joke.category }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</main>

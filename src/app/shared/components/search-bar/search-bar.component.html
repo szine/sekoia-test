@@ -1,0 +1,33 @@
+<form class="search-bar" (submit)="onSubmit($event)">
+  <label [for]="'search-input'" class="search-bar__label">{{ label() }}</label>
+  <div class="search-bar__container">
+    <div class="search-bar__input-wrapper">
+
+      
+      <svg class="search-bar__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.12439 0C2.77767 0 0 2.63376 0 5.96179C0 9.28983 2.77767 11.9236 6.12439 11.9236C7.48967 11.9236 8.76024 11.4853 9.78618 10.7403L13.7557 14.7826C14.0404 15.0725 14.5019 15.0725 14.7865 14.7826C15.0712 14.4928 15.0712 14.0228 14.7865 13.7329L10.8642 9.73878C11.7274 8.71526 12.2488 7.40369 12.2488 5.96179C12.2488 2.63376 9.47111 0 6.12439 0ZM1.45774 5.96179C1.45774 3.52445 3.51138 1.48445 6.12439 1.48445C8.7374 1.48445 10.791 3.52445 10.791 5.96179C10.791 8.39914 8.7374 10.4391 6.12439 10.4391C3.51138 10.4391 1.45774 8.39914 1.45774 5.96179Z" fill="#6D6E9C"/>
+      </svg>
+
+      <input
+        id="search-input"
+        type="text"
+        class="search-bar__input"
+        [placeholder]="placeholder()"
+        [value]="query()"
+        (input)="onInput($any($event.target).value)"
+        [disabled]="disabled()"
+        [attr.aria-label]="label()"
+      />
+    </div>
+    <button
+      type="submit"
+      class="search-bar__button"
+      [disabled]="disabled()"
+      aria-label="Search"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.75 0.75C6.75 0.335786 6.41421 0 6 0C5.58579 0 5.25 0.335786 5.25 0.75V5.25H0.75C0.335786 5.25 0 5.58579 0 6C0 6.41421 0.335786 6.75 0.75 6.75H5.25V11.25C5.25 11.6642 5.58579 12 6 12C6.41421 12 6.75 11.6642 6.75 11.25V6.75H11.25C11.6642 6.75 12 6.41421 12 6C12 5.58579 11.6642 5.25 11.25 5.25H6.75V0.75Z" fill="#646B8B"/>
+      </svg>
+    </button>
+  </div>
+</form>

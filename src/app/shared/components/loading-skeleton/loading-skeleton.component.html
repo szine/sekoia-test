@@ -1,0 +1,16 @@
+<div class="loading-skeleton" role="status" aria-live="polite" [attr.aria-label]="message()">
+  <span class="loading-skeleton__sr-only">{{ message() }}</span>
+  <div class="loading-skeleton__grid">
+    @for (item of items; track $index) {
+      <div class="loading-skeleton__card">
+        <div class="loading-skeleton__line loading-skeleton__line--text"></div>
+        <div class="loading-skeleton__line loading-skeleton__line--text"></div>
+        <div class="loading-skeleton__line loading-skeleton__line--short"></div>
+        <div class="loading-skeleton__tags">
+          <div class="loading-skeleton__tag"></div>
+          <div class="loading-skeleton__tag"></div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
