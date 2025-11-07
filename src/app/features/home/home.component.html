@@ -6,10 +6,12 @@
 
     <div class="home__search-wrapper">
       <app-search-bar
-        [placeholder]="'find a joke'"
-        [label]="i18n.t().search.label"
-        [disabled]="loading()"
+        placeholder="find a joke"
+        label="Search"
+        [debounceTime]="500"
+        [loading]="loading() && !isInitialLoad()"
         (search)="onSearch($event)"
+        (addJoke)="onOpenDialog()"
       />
     </div>
 
@@ -21,7 +23,7 @@
       />
     }
 
-    @if (loading()) {
+    @if (loading() && isInitialLoad()) {
       <app-loading-skeleton
         [count]="10"
         [message]="i18n.t().loading.message"
@@ -61,4 +63,19 @@
       </div>
     }
   </div>
+
+  @if (showDialog()) {
+    <app-add-joke-dialog
+      (close)="onCloseDialog()"
+      (jokeAdded)="onJokeAdded()"
+    />
+  }
+
+  @if (showToast()) {
+    <app-toast
+      [message]="toastMessage()"
+      [type]="'success'"
+      (close)="onCloseToast()"
+    />
+  }
 </main>

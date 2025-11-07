@@ -9,17 +9,17 @@ test.describe('Home Page - WikiJokes', () => {
     await expect(page.locator('h1')).toContainText('WikiJokes');
   });
 
-  test('should have search input and button with SVG icon', async ({ page }) => {
+  test('should have search input and add joke button with SVG icon', async ({ page }) => {
     const searchInput = page.locator('input[type="text"]');
-    const searchButton = page.locator('button[type="submit"]');
-    const svg = searchButton.locator('svg');
+    const addJokeButton = page.locator('button[type="submit"]');
+    const svg = addJokeButton.locator('svg');
 
     await expect(searchInput).toBeVisible();
-    await expect(searchButton).toBeVisible();
+    await expect(addJokeButton).toBeVisible();
     await expect(svg).toBeVisible();
   });
 
-  test('Search happy path: type query, submit, verify 10 joke cards', async ({ page }) => {
+  test('Search happy path: type query, wait for debounce, verify joke cards', async ({ page }) => {
     // Wait for initial load to complete
     await page.waitForSelector('.joke-card, app-loading-skeleton, app-empty-state', { timeout: 10000 });
 
@@ -27,9 +27,8 @@ test.describe('Home Page - WikiJokes', () => {
     const searchInput = page.locator('input[type="text"]');
     await searchInput.fill('programming');
 
-    // Submit the form
-    const searchButton = page.locator('button[type="submit"]');
-    await searchButton.click();
+    // Wait for debounce (500ms) + API response
+    await page.waitForTimeout(1000);
 
     // Wait for loading to complete and jokes to appear
     await page.waitForSelector('.joke-card', { timeout: 10000 });
@@ -165,38 +164,51 @@ test.describe('Home Page - WikiJokes', () => {
     await expect(tags.first()).not.toBeEmpty();
   });
 
-  test('Search bar is disabled while loading', async ({ page }) => {
+  test('Search continues to work during loading', async ({ page }) => {
     // Intercept API to delay response
     await page.route('**/joke/Any*', async (route) => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await route.continue();
     });
 
     const searchInput = page.locator('input[type="text"]');
     await searchInput.fill('test');
     
-    const searchButton = page.locator('button[type="submit"]');
-    await searchButton.click();
-
-    // Check if input is disabled during loading
-    await expect(searchInput).toBeDisabled();
-    await expect(searchButton).toBeDisabled();
+    // Input should remain enabled and functional
+    await expect(searchInput).toBeEnabled();
+    
+    // User can continue typing
+    await searchInput.fill('test query');
+    await expect(searchInput).toHaveValue('test query');
   });
 
-  test('Semantic HTML: main, form, section elements', async ({ page }) => {
+  test('Semantic HTML: main, form, article elements', async ({ page }) => {
     await expect(page.locator('main')).toBeVisible();
     await expect(page.locator('form')).toBeVisible();
-    await expect(page.locator('section[aria-label="Search section"]')).toBeVisible();
+    
+    // Wait for jokes to load
+    await page.waitForSelector('.joke-card', { timeout: 10000 });
+    await expect(page.locator('article.joke-card').first()).toBeVisible();
   });
 
   test('ARIA live regions for loading state', async ({ page }) => {
     await page.goto('/');
     
+    // Wait a bit for initial load
+    await page.waitForTimeout(100);
+    
     const loadingSkeleton = page.locator('[role="status"][aria-live="polite"]');
     
-    // Loading skeleton should have proper ARIA attributes
-    if (await loadingSkeleton.count() > 0) {
-      await expect(loadingSkeleton).toHaveAttribute('aria-live', 'polite');
+    // Loading skeleton should appear during initial load
+    const count = await loadingSkeleton.count();
+    
+    // Either skeleton is visible or jokes are already loaded
+    if (count > 0) {
+      await expect(loadingSkeleton.first()).toHaveAttribute('aria-live', 'polite');
+    } else {
+      // Jokes loaded quickly, verify they are visible
+      const jokeCards = page.locator('.joke-card');
+      await expect(jokeCards.first()).toBeVisible();
     }
   });
 

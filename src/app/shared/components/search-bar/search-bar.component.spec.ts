@@ -40,52 +40,31 @@ describe('SearchBarComponent', () => {
     expect(svg?.getAttribute('height')).toBe('12');
   });
 
-  it('should emit search event on form submit', () => {
-    const searchSpy = jasmine.createSpy('search');
-    component.search.subscribe(searchSpy);
-
-    component.query.set('test query');
-    fixture.detectChanges();
+  it('should emit addJoke event on form submit', () => {
+    const addJokeSpy = jasmine.createSpy('addJoke');
+    component.addJoke.subscribe(addJokeSpy);
 
     const form = compiled.querySelector('form');
     const event = new Event('submit');
     form?.dispatchEvent(event);
 
-    expect(searchSpy).toHaveBeenCalledWith('test query');
+    expect(addJokeSpy).toHaveBeenCalled();
   });
 
-  it('should emit search event on Enter key', () => {
+  it('should emit search event on input with debounce', (done) => {
     const searchSpy = jasmine.createSpy('search');
     component.search.subscribe(searchSpy);
 
     const input = compiled.querySelector('input') as HTMLInputElement;
-    input.value = 'keyboard test';
+    input.value = 'test query';
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const form = compiled.querySelector('form');
-    const submitEvent = new Event('submit');
-    form?.dispatchEvent(submitEvent);
-
-    expect(searchSpy).toHaveBeenCalledWith('keyboard test');
-  });
-
-  it('should update query signal on input', () => {
-    const input = compiled.querySelector('input') as HTMLInputElement;
-    
-    input.value = 'new query';
-    input.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
-    expect(component.query()).toBe('new query');
-  });
-
-  it('should disable input when disabled is true', () => {
-    fixture.componentRef.setInput('disabled', true);
-    fixture.detectChanges();
-
-    const input = compiled.querySelector('input') as HTMLInputElement;
-    expect(input.disabled).toBe(true);
+    // Wait for debounce
+    setTimeout(() => {
+      expect(searchSpy).toHaveBeenCalledWith('test query');
+      done();
+    }, 600);
   });
 
   it('should disable button when disabled is true', () => {
@@ -132,17 +111,14 @@ describe('SearchBarComponent', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it('should emit empty string when submitting empty input', () => {
-    const searchSpy = jasmine.createSpy('search');
-    component.search.subscribe(searchSpy);
-
-    component.query.set('');
-    fixture.detectChanges();
+  it('should emit addJoke when submitting form', () => {
+    const addJokeSpy = jasmine.createSpy('addJoke');
+    component.addJoke.subscribe(addJokeSpy);
 
     const form = compiled.querySelector('form');
     const event = new Event('submit');
     form?.dispatchEvent(event);
 
-    expect(searchSpy).toHaveBeenCalledWith('');
+    expect(addJokeSpy).toHaveBeenCalled();
   });
 });

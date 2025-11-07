@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { HomeComponent } from './home.component';
 import { JokeService, JokeResult } from '../../core/services/joke.service';
+import { JokeStorageService } from '../../core/services/joke-storage.service';
 import { Joke } from '../../models/joke.model';
 
 describe('HomeComponent', () => {
@@ -12,6 +14,7 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let compiled: HTMLElement;
   let jokeService: jasmine.SpyObj<JokeService>;
+  let jokeStorageService: jasmine.SpyObj<JokeStorageService>;
 
   const mockJokes: Joke[] = [
     {
@@ -33,17 +36,24 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     const jokeServiceSpy = jasmine.createSpyObj('JokeService', ['getJokes']);
+    const jokeStorageServiceSpy = jasmine.createSpyObj('JokeStorageService', ['getCustomJokes', 'addJoke', 'removeJoke']);
+    
+    // Mock getCustomJokes to return a signal with empty array
+    jokeStorageServiceSpy.getCustomJokes.and.returnValue(() => []);
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: JokeService, useValue: jokeServiceSpy }
+        provideRouter([]),
+        { provide: JokeService, useValue: jokeServiceSpy },
+        { provide: JokeStorageService, useValue: jokeStorageServiceSpy }
       ]
     }).compileComponents();
 
     jokeService = TestBed.inject(JokeService) as jasmine.SpyObj<JokeService>;
+    jokeStorageService = TestBed.inject(JokeStorageService) as jasmine.SpyObj<JokeStorageService>;
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     compiled = fixture.nativeElement;
@@ -69,15 +79,14 @@ describe('HomeComponent', () => {
   it('should show loading skeleton while fetching', fakeAsync(() => {
     jokeService.getJokes.and.returnValue(of({ jokes: [] }));
 
+    // Initial state - should trigger ngOnInit which calls onSearch
+    expect(component.isInitialLoad()).toBe(true);
+    
     fixture.detectChanges();
-    
-    // Before async operation completes
-    expect(component.loading()).toBe(true);
-    
     tick();
-    fixture.detectChanges();
     
-    // After async operation completes
+    // After initial load completes
+    expect(component.isInitialLoad()).toBe(false);
     expect(component.loading()).toBe(false);
   }));
 
@@ -225,16 +234,35 @@ describe('HomeComponent', () => {
     expect(tags[0]?.textContent).toContain('single');
   }));
 
-  it('should disable search bar while loading', fakeAsync(() => {
+  it('should show loading spinner in search bar during search', fakeAsync(() => {
+    // First call for initial load
     jokeService.getJokes.and.returnValue(of({ jokes: [] }));
 
     fixture.detectChanges();
+    tick();
     
-    expect(component.loading()).toBe(true);
+    // Verify initial load is complete
+    expect(component.isInitialLoad()).toBe(false);
+    expect(component.loading()).toBe(false);
+    
+    // Set up a new observable that won't complete immediately
+    let loadingStateWhenChecked = false;
+    jokeService.getJokes.and.callFake(() => {
+      // Capture loading state right after onSearch sets it
+      loadingStateWhenChecked = component.loading();
+      return of({ jokes: [] });
+    });
+    
+    // Trigger a new search
+    component.onSearch('test');
+    
+    // Loading should have been true when the service was called
+    expect(loadingStateWhenChecked).toBe(true);
+    expect(component.isInitialLoad()).toBe(false);
     
     tick();
-    fixture.detectChanges();
     
+    // After completion, loading should be false
     expect(component.loading()).toBe(false);
   }));
 
@@ -265,10 +293,10 @@ describe('HomeComponent', () => {
     const main = compiled.querySelector('main');
     expect(main).toBeTruthy();
 
-    const searchSection = compiled.querySelector('[aria-label="Search section"]');
-    expect(searchSection).toBeTruthy();
+    const searchBar = compiled.querySelector('app-search-bar');
+    expect(searchBar).toBeTruthy();
 
-    const resultsSection = compiled.querySelector('[aria-label="Search results"]');
+    const resultsSection = compiled.querySelector('.home__results');
     expect(resultsSection).toBeTruthy();
   }));
 

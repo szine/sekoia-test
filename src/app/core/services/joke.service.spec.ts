@@ -215,7 +215,9 @@ describe('JokeService', () => {
       });
 
       const req = httpMock.expectOne((request) => {
-        return request.params.get('contains') === 'programming';
+        const containsParam = request.params.get('contains');
+        expect(containsParam).toBe('programming');
+        return containsParam === 'programming';
       });
 
       req.flush(mockResponse);
