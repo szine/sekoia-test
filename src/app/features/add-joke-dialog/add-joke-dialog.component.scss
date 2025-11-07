@@ -17,26 +17,27 @@
   width: 100%;
   max-width: 500px;
   height: 100%;
-  background-color: #ffffff;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-card-bg);
+  box-shadow: -4px 0 12px var(--color-shadow);
   display: flex;
   flex-direction: column;
   animation: slideInRight 0.3s ease-out;
   overflow-y: auto;
+  transition: background-color 0.3s ease;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem;
-    border-bottom: 1px solid #E2E4F0;
+    border-bottom: 1px solid var(--color-border);
   }
 
   &__title {
     margin: 0;
     font-size: $font-size-xxl;
     font-weight: 600;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__close {
@@ -44,17 +45,17 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: $neutral-500;
-    transition: color 0.2s ease;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease, background-color 0.2s ease;
     border-radius: 4px;
 
     &:hover {
-      color: $color-text;
-      background-color: #f8f9fc;
+      color: var(--color-text);
+      background-color: var(--color-primary-alpha);
     }
 
     &:focus-visible {
-      outline: 2px solid $secondary-500;
+      outline: 2px solid var(--color-primary);
       outline-offset: 2px;
     }
   }
@@ -75,7 +76,7 @@
     margin-bottom: 0.5rem;
     font-size: $font-size-m;
     font-weight: 600;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__required {
@@ -87,22 +88,22 @@
     padding: 12px;
     font-size: $font-size-m;
     line-height: $line-height-m;
-    color: $color-text;
-    border: 1px solid $secondary-100;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: #f8f9fc;
+    background: var(--color-input-bg);
     resize: vertical;
     font-family: inherit;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.3s ease;
 
     &::placeholder {
-      color: $neutral-500;
+      color: var(--color-text-muted);
     }
 
     &:focus {
       outline: none;
-      border-color: $secondary-500;
-      background-color: #ffffff;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-alpha);
     }
 
     &:disabled {
@@ -114,7 +115,7 @@
   &__hint {
     margin-top: 0.5rem;
     font-size: $font-size-s;
-    color: $neutral-500;
+    color: var(--color-text-muted);
   }
 
   &__error {
@@ -133,7 +134,7 @@
     justify-content: flex-end;
     margin-top: auto;
     padding-top: 1.5rem;
-    border-top: 1px solid #E2E4F0;
+    border-top: 1px solid var(--color-border);
   }
 
   &__button {
@@ -151,26 +152,26 @@
     }
 
     &:focus-visible {
-      outline: 2px solid $secondary-500;
+      outline: 2px solid var(--color-primary);
       outline-offset: 2px;
     }
 
     &--primary {
-      color: #ffffff;
-      background-color: $secondary-500;
+      color: var(--color-button-text);
+      background-color: var(--color-primary);
 
       &:hover:not(:disabled) {
-        background-color: darken($secondary-500, 10%);
+        background-color: var(--color-primary-hover);
       }
     }
 
     &--secondary {
-      color: $color-text;
+      color: var(--color-text);
       background-color: transparent;
-      border: 1px solid $secondary-100;
+      border: 1px solid var(--color-border);
 
       &:hover:not(:disabled) {
-        background-color: #f8f9fc;
+        background-color: var(--color-primary-alpha);
       }
     }
   }

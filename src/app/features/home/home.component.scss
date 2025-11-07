@@ -3,13 +3,22 @@
 .home {
   min-height: 100vh;
   padding-top: 9px;
-  background-color: #f8f9fc;
+  background-color: var(--color-bg);
+  position: relative;
 
   &__container {
     max-width: 835px;
-    background: white;
+    background: var(--color-card-bg);
     padding: 25px 23px;
     margin: 0 auto;
+    transition: background-color 0.3s ease;
+  }
+
+  &__theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
   }
 
   &__header {
@@ -22,7 +31,7 @@
     font-size: $font-size-xxl;
     font-weight: bold;
     letter-spacing: 0px;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__search-wrapper {
@@ -56,15 +65,16 @@
 .joke-card {
   max-width: 785px;
   padding: 16px;
-  background-color: #ffffff;
-  border: 1px solid #E2E4F0;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 
   &__content {
     margin: 0 0 1rem;
     font-size: $font-size-m;
     line-height: $line-height-m;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__twopart {
@@ -74,14 +84,14 @@
   &__setup {
     font-size: $font-size-m;
     line-height: $line-height-m;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__delivery {
     margin: 0;
     font-size: $font-size-m;
     line-height: $line-height-m;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__tags {
@@ -98,10 +108,11 @@
     font-size: $font-size-s;
     line-height: 130%;
     font-weight: 600;
-    color: $secondary-500;
+    color: var(--color-tag-text);
     background-color: transparent;
-    border: 1px solid $secondary-100;
+    border: 1px solid var(--color-tag-border);
     border-radius: 500px;
     text-transform: capitalize;
+    transition: border-color 0.3s ease, color 0.3s ease;
   }
 }

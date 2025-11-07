@@ -1,7 +1,7 @@
-import { Component, signal, inject, ChangeDetectionStrategy, OnInit, OnDestroy, effect, ElementRef, viewChild, computed } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy, OnInit, OnDestroy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil, switchMap, catchError, of } from 'rxjs';
+import { Subject, takeUntil, catchError, of } from 'rxjs';
 
 import { JokeService, JokeResult } from '../../core/services/joke.service';
 import { Joke } from '../../models/joke.model';
@@ -12,6 +12,7 @@ import { LoadingSkeletonComponent } from '../../shared/components/loading-skelet
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 import { AddJokeDialogComponent } from '../add-joke-dialog/add-joke-dialog.component';
 
 @Component({
@@ -24,6 +25,7 @@ import { AddJokeDialogComponent } from '../add-joke-dialog/add-joke-dialog.compo
     EmptyStateComponent,
     ErrorBannerComponent,
     ToastComponent,
+    ThemeToggleComponent,
     AddJokeDialogComponent
   ],
   templateUrl: './home.component.html',
@@ -48,13 +50,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly showToast = signal<boolean>(false);
   readonly toastMessage = signal<string>('');
   
-  private readonly resultsHeading = viewChild<ElementRef>('resultsHeading');
-  
-  // Combine custom jokes with API jokes
+  // Combine custom jokes with API jokes only when no search query
   readonly jokes = computed(() => {
-    const custom = this.jokeStorage.getCustomJokes()();
     const api = this.apiJokes();
-    return [...custom, ...api];
+    const currentQuery = this.query();
+    
+    // Only show custom jokes when there's no search query (empty or initial load)
+    if (!currentQuery || currentQuery.trim() === '') {
+      const custom = this.jokeStorage.getCustomJokes()();
+      return [...custom, ...api];
+    }
+    
+    // When searching, only show API results
+    return api;
   });
 
   constructor() {
@@ -151,10 +159,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onCloseToast(): void {
     this.showToast.set(false);
-  }
-
-  async loadDialogComponent() {
-    const { AddJokeDialogComponent } = await import('../add-joke-dialog/add-joke-dialog.component');
-    return AddJokeDialogComponent;
   }
 }

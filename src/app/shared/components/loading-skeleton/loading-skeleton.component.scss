@@ -20,19 +20,20 @@
   &__card {
     max-width: 785px;
     padding: 1.25rem 1.5rem;
-    background-color: #ffffff;
-    border: 1px solid #e5e5e7;
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px var(--color-shadow);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
   &__line {
     height: 0.9375rem;
     background: linear-gradient(
       90deg,
-      #f3f4f6 0%,
-      #e5e7eb 50%,
-      #f3f4f6 100%
+      var(--color-skeleton-base) 0%,
+      var(--color-skeleton-highlight) 50%,
+      var(--color-skeleton-base) 100%
     );
     background-size: 200% 100%;
     border-radius: 0.25rem;
@@ -67,9 +68,9 @@
     height: 22px;
     background: linear-gradient(
       90deg,
-      #f3f4f6 0%,
-      #e5e7eb 50%,
-      #f3f4f6 100%
+      var(--color-skeleton-base) 0%,
+      var(--color-skeleton-highlight) 50%,
+      var(--color-skeleton-base) 100%
     );
     background-size: 200% 100%;
     border-radius: 1rem;

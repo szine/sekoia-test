@@ -12,10 +12,11 @@
   min-width: 300px;
   max-width: 500px;
   padding: 1rem 1.5rem;
-  background-color: #ffffff;
+  background-color: var(--color-card-bg);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--color-shadow);
   animation: slideIn 0.3s ease-out;
+  transition: background-color 0.3s ease;
 
   &__content {
     display: flex;
@@ -32,7 +33,7 @@
     margin: 0;
     font-size: $font-size-m;
     line-height: $line-height-m;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   &__close {
@@ -41,11 +42,11 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: $neutral-500;
+    color: var(--color-text-muted);
     transition: color 0.2s ease;
 
     &:hover {
-      color: $color-text;
+      color: var(--color-text);
     }
   }
 

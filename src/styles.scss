@@ -1,17 +1,19 @@
 /* Global styles with light/dark theme support */
 
-:root {
-  /* Light theme colors */
-  --color-bg: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
+:root,
+:root[data-theme='light'],
+:root.light-theme {
+  /* Light theme colors - Original design */
+  --color-bg: #f8f9fc;
+  --color-text: #21225F;
+  --color-text-muted: #6D6E9C;
+  --color-border: #E2E4F0;
   --color-card-bg: #ffffff;
-  --color-input-bg: #ffffff;
+  --color-input-bg: #f8f9fc;
   
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-primary-alpha: rgba(59, 130, 246, 0.1);
+  --color-primary: #2D2E83;
+  --color-primary-hover: #21225F;
+  --color-primary-alpha: rgba(45, 46, 131, 0.1);
   
   --color-button-text: #ffffff;
   
@@ -24,34 +26,39 @@
   
   --color-skeleton-base: #f3f4f6;
   --color-skeleton-highlight: #e5e7eb;
+  
+  --color-tag-text: #2D2E83;
+  --color-tag-border: #B2B2E4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark theme colors */
-    --color-bg: #0f172a;
-    --color-text: #f1f5f9;
-    --color-text-muted: #94a3b8;
-    --color-border: #334155;
-    --color-card-bg: #1e293b;
-    --color-input-bg: #1e293b;
-    
-    --color-primary: #60a5fa;
-    --color-primary-hover: #3b82f6;
-    --color-primary-alpha: rgba(96, 165, 250, 0.15);
-    
-    --color-button-text: #0f172a;
-    
-    --color-error: #f87171;
-    --color-error-bg: #1e1b1b;
-    --color-error-border: #3f2020;
-    --color-error-text: #fca5a5;
-    
-    --color-shadow: rgba(0, 0, 0, 0.3);
-    
-    --color-skeleton-base: #1e293b;
-    --color-skeleton-highlight: #334155;
-  }
+:root[data-theme='dark'],
+:root.dark-theme {
+  /* Dark theme colors */
+  --color-bg: #0f172a;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border: #334155;
+  --color-card-bg: #1e293b;
+  --color-input-bg: #1e293b;
+  
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-primary-alpha: rgba(96, 165, 250, 0.15);
+  
+  --color-button-text: #0f172a;
+  
+  --color-error: #f87171;
+  --color-error-bg: #1e1b1b;
+  --color-error-border: #3f2020;
+  --color-error-text: #fca5a5;
+  
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  
+  --color-skeleton-base: #1e293b;
+  --color-skeleton-highlight: #334155;
+  
+  --color-tag-text: #60a5fa;
+  --color-tag-border: #334155;
 }
 
 /* CSS reset and base styles */
@@ -72,8 +79,8 @@ html {
 body {
   margin: 0;
   font-family:  'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  color: #1d1d1f;
-  background-color: #f5f5f7;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   line-height: 1.5;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
