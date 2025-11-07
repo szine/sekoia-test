@@ -62,6 +62,7 @@
     &::placeholder {
       letter-spacing: 0px;
       color: var(--color-text-muted);
+      font-weight: 400;
     }
 
     &:focus {

@@ -1,15 +1,18 @@
 <main class="home">
-  <app-theme-toggle class="home__theme-toggle" />
+  <div class="home__controls">
+    <app-language-selector class="home__language-selector" />
+    <app-theme-toggle class="home__theme-toggle" />
+  </div>
   
   <div class="home__container">
     <header class="home__header">
-      <h1 class="home__title">WikiJokes</h1>
+      <h1 class="home__title">{{ i18n.t().home.title }}</h1>
     </header>
 
     <div class="home__search-wrapper">
       <app-search-bar
-        placeholder="find a joke"
-        label="Search"
+        [placeholder]="i18n.t().search.placeholder"
+        [label]="i18n.t().search.label"
         [debounceTime]="500"
         [loading]="loading() && !isInitialLoad()"
         (search)="onSearch($event)"

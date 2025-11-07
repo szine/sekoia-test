@@ -3,20 +3,16 @@ import { JokeStorageService, CustomJoke } from './joke-storage.service';
 
 describe('JokeStorageService', () => {
   let service: JokeStorageService;
-  let localStorageSpy: jasmine.SpyObj<Storage>;
 
   beforeEach(() => {
-    const storageSpy = jasmine.createSpyObj('Storage', ['getItem', 'setItem', 'removeItem']);
+    // Clear localStorage before each test
+    localStorage.clear();
     
     TestBed.configureTestingModule({
-      providers: [
-        JokeStorageService,
-        { provide: Storage, useValue: storageSpy }
-      ]
+      providers: [JokeStorageService]
     });
     
     service = TestBed.inject(JokeStorageService);
-    localStorageSpy = TestBed.inject(Storage) as jasmine.SpyObj<Storage>;
   });
 
   it('should be created', () => {

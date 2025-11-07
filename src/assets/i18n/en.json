@@ -1,0 +1,39 @@
+{
+  "search": {
+    "placeholder": "find a joke",
+    "button": "Search",
+    "label": "Search"
+  },
+  "loading": {
+    "message": "Loading jokes..."
+  },
+  "empty": {
+    "title": "No jokes found",
+    "message": "Try adjusting your search criteria or search for something else."
+  },
+  "error": {
+    "retry": "Retry"
+  },
+  "home": {
+    "title": "WikiJokes",
+    "resultsHeading": "Jokes"
+  },
+  "addJoke": {
+    "title": "Add Your Joke",
+    "setupLabel": "Setup",
+    "setupPlaceholder": "Enter the setup...",
+    "deliveryLabel": "Delivery",
+    "deliveryPlaceholder": "Enter the punchline...",
+    "jokeLabel": "Joke",
+    "jokePlaceholder": "Enter your joke...",
+    "setupHint": "The first part of your two-part joke",
+    "deliveryHint": "The punchline of your joke",
+    "jokeHint": "Your complete joke in one part",
+    "cancel": "Cancel",
+    "add": "Add Joke",
+    "errorRequired": "Please fill in all required fields"
+  },
+  "toast": {
+    "jokeAdded": "Joke added successfully!"
+  }
+}

@@ -2,6 +2,7 @@ import { Component, output, signal, ChangeDetectionStrategy, effect, viewChild, 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JokeStorageService } from '../../core/services/joke-storage.service';
+import { I18nService } from '../../core/services/i18n.service';
 
 @Component({
   selector: 'app-add-joke-dialog',
@@ -13,6 +14,7 @@ import { JokeStorageService } from '../../core/services/joke-storage.service';
 })
 export class AddJokeDialogComponent {
   private readonly jokeStorage = inject(JokeStorageService);
+  protected readonly i18n = inject(I18nService);
   private readonly dialogElement = viewChild<ElementRef<HTMLElement>>('dialog');
   private readonly firstInput = viewChild<ElementRef<HTMLTextAreaElement>>('jokeInput');
   

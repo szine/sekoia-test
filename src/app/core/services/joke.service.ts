@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Joke } from '../../models/joke.model';
+import { I18nService } from './i18n.service';
 
 export interface JokeApiResponse {
   error: boolean;
@@ -21,12 +22,14 @@ export interface JokeResult {
 })
 export class JokeService {
   private readonly http = inject(HttpClient);
+  private readonly i18n = inject(I18nService);
   private readonly baseUrl = 'https://v2.jokeapi.dev/joke/Any';
   private readonly blacklistFlags = ['nsfw', 'religious', 'political', 'racist', 'sexist', 'explicit'];
 
   getJokes(query: string): Observable<JokeResult> {
     let params = new HttpParams()
       .set('amount', '10')
+      .set('lang', this.i18n.getLanguage())
       .set('blacklistFlags', this.blacklistFlags.join(','));
 
     if (query.trim()) {

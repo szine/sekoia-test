@@ -1,0 +1,39 @@
+{
+  "search": {
+    "placeholder": "trouver une blague",
+    "button": "Rechercher",
+    "label": "Rechercher"
+  },
+  "loading": {
+    "message": "Chargement des blagues..."
+  },
+  "empty": {
+    "title": "Aucune blague trouvée",
+    "message": "Essayez d'ajuster vos critères de recherche ou recherchez autre chose."
+  },
+  "error": {
+    "retry": "Réessayer"
+  },
+  "home": {
+    "title": "WikiJokes",
+    "resultsHeading": "Blagues"
+  },
+  "addJoke": {
+    "title": "Ajouter une Blague Personnalisée",
+    "setupLabel": "Introduction",
+    "setupPlaceholder": "Entrez l'introduction...",
+    "deliveryLabel": "Chute",
+    "deliveryPlaceholder": "Entrez la chute...",
+    "jokeLabel": "Blague",
+    "jokePlaceholder": "Entrez votre blague...",
+    "setupHint": "La première partie de votre blague en deux parties",
+    "deliveryHint": "La chute de votre blague",
+    "jokeHint": "Votre blague complète en une seule partie",
+    "cancel": "Annuler",
+    "add": "Ajouter la Blague",
+    "errorRequired": "Veuillez remplir tous les champs requis"
+  },
+  "toast": {
+    "jokeAdded": "Blague ajoutée avec succès !"
+  }
+}

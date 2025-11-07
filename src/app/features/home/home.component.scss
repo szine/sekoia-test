@@ -14,12 +14,16 @@
     transition: background-color 0.3s ease;
   }
 
-  &__theme-toggle {
+  &__controls {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     z-index: 100;
   }
+
 
   &__header {
     margin-bottom: 2.5rem;

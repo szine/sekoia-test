@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AddJokeDialogComponent } from './add-joke-dialog.component';
 import { JokeStorageService } from '../../core/services/joke-storage.service';
+import { I18nService } from '../../core/services/i18n.service';
 
 describe('AddJokeDialogComponent', () => {
   let component: AddJokeDialogComponent;
@@ -14,11 +17,18 @@ describe('AddJokeDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddJokeDialogComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: JokeStorageService, useValue: storageSpy }
       ]
     }).compileComponents();
 
     jokeStorageService = TestBed.inject(JokeStorageService) as jasmine.SpyObj<JokeStorageService>;
+    
+    // Force language to English for consistent tests
+    const i18nService = TestBed.inject(I18nService);
+    i18nService.setLanguage('en');
+    
     fixture = TestBed.createComponent(AddJokeDialogComponent);
     component = fixture.componentInstance;
     compiled = fixture.nativeElement;
@@ -82,23 +92,20 @@ describe('AddJokeDialogComponent', () => {
     });
   });
 
-  describe('Character count', () => {
-    it('should display character count', () => {
-      component.jokeText.set('Hello');
-      fixture.detectChanges();
-
+  describe('Hint text', () => {
+    it('should display hint text', () => {
       const hint = compiled.querySelector('.dialog__hint');
-      expect(hint?.textContent).toContain('5 / 10');
+      expect(hint?.textContent?.trim()).toBe('Your complete joke in one part');
     });
 
-    it('should update character count on input', () => {
+    it('should keep hint text visible on input', () => {
       const textarea = compiled.querySelector('textarea') as HTMLTextAreaElement;
       textarea.value = 'This is a test';
       textarea.dispatchEvent(new Event('input'));
       fixture.detectChanges();
 
       const hint = compiled.querySelector('.dialog__hint');
-      expect(hint?.textContent).toContain('14 / 10');
+      expect(hint?.textContent?.trim()).toBe('Your complete joke in one part');
     });
   });
 

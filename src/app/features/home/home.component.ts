@@ -1,4 +1,4 @@
-import { Component, signal, inject, ChangeDetectionStrategy, OnInit, OnDestroy, computed } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy, OnInit, OnDestroy, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil, catchError, of } from 'rxjs';
@@ -13,6 +13,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
 import { ErrorBannerComponent } from '../../shared/components/error-banner/error-banner.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
+import { LanguageSelectorComponent } from '../../shared/components/language-selector/language-selector.component';
 import { AddJokeDialogComponent } from '../add-joke-dialog/add-joke-dialog.component';
 
 @Component({
@@ -26,6 +27,7 @@ import { AddJokeDialogComponent } from '../add-joke-dialog/add-joke-dialog.compo
     ErrorBannerComponent,
     ToastComponent,
     ThemeToggleComponent,
+    LanguageSelectorComponent,
     AddJokeDialogComponent
   ],
   templateUrl: './home.component.html',
@@ -72,6 +74,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.showDialog.set(params['addJoke'] === 'true');
       });
+
+    // Refresh jokes when language changes
+    effect(() => {
+      const currentLang = this.i18n.language();
+      // Skip the initial load (will be handled by ngOnInit)
+      if (!this.isInitialLoad()) {
+        this.onSearch(this.query());
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -153,7 +164,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onJokeAdded(): void {
-    this.toastMessage.set('Joke added successfully!');
+    this.toastMessage.set(this.i18n.t().toast.jokeAdded);
     this.showToast.set(true);
   }
 

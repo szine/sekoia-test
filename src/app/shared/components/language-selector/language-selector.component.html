@@ -1,0 +1,59 @@
+<div class="language-selector">
+  <button
+    class="language-selector__button"
+    (click)="toggleDropdown()"
+    [attr.aria-label]="'Select language'"
+    [attr.aria-expanded]="isOpen()"
+    type="button"
+  >
+    @if (currentLanguage() === 'en') {
+      <!-- US Flag -->
+      <svg class="language-selector__flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18">
+        <rect width="24" height="18" fill="#B22234"/>
+        <path d="M0,2.77h24M0,5.54h24M0,8.31h24M0,11.08h24M0,13.85h24M0,16.62h24" stroke="#fff" stroke-width="1.38"/>
+        <rect width="9.6" height="9.69" fill="#3C3B6E"/>
+      </svg>
+    } @else {
+      <!-- French Flag -->
+      <svg class="language-selector__flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18">
+        <rect width="8" height="18" fill="#002395"/>
+        <rect x="8" width="8" height="18" fill="#fff"/>
+        <rect x="16" width="8" height="18" fill="#ED2939"/>
+      </svg>
+    }
+    <svg class="language-selector__chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  @if (isOpen()) {
+    <div class="language-selector__dropdown">
+      <button
+        class="language-selector__option"
+        [class.language-selector__option--active]="currentLanguage() === 'en'"
+        (click)="selectLanguage('en')"
+        type="button"
+      >
+        <svg class="language-selector__flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18">
+          <rect width="24" height="18" fill="#B22234"/>
+          <path d="M0,2.77h24M0,5.54h24M0,8.31h24M0,11.08h24M0,13.85h24M0,16.62h24" stroke="#fff" stroke-width="1.38"/>
+          <rect width="9.6" height="9.69" fill="#3C3B6E"/>
+        </svg>
+        <span>English</span>
+      </button>
+      <button
+        class="language-selector__option"
+        [class.language-selector__option--active]="currentLanguage() === 'fr'"
+        (click)="selectLanguage('fr')"
+        type="button"
+      >
+        <svg class="language-selector__flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 18">
+          <rect width="8" height="18" fill="#002395"/>
+          <rect x="8" width="8" height="18" fill="#fff"/>
+          <rect x="16" width="8" height="18" fill="#ED2939"/>
+        </svg>
+        <span>Français</span>
+      </button>
+    </div>
+  }
+</div>
