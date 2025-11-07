@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SwUpdateService } from './core/services/sw-update.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {}
+export class App {
+  // Initialize service worker update service
+  private readonly swUpdate = inject(SwUpdateService);
+}

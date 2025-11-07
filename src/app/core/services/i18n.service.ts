@@ -112,26 +112,28 @@ export class I18nService {
     this.loadTranslations();
   }
 
-  private async loadTranslations(): Promise<void> {
-    try {
-      const [enData, frData] = await Promise.all([
-        fetch('/assets/i18n/en.json').then(r => r.json()),
-        fetch('/assets/i18n/fr.json').then(r => r.json())
-      ]);
-      
-      translations.set({
-        en: enData,
-        fr: frData
+  private loadTranslations(): void {
+    // Use HttpClient to load translations (works with PWA and tests)
+    Promise.all([
+      this.http.get<Translations>('/assets/i18n/en.json').toPromise(),
+      this.http.get<Translations>('/assets/i18n/fr.json').toPromise()
+    ])
+      .then(([enData, frData]) => {
+        if (enData && frData) {
+          translations.set({
+            en: enData,
+            fr: frData
+          });
+          this.translationsLoaded = true;
+        }
+      })
+      .catch(error => {
+        // Silently fail in tests or if files are not found
+        // Default translations are already loaded
+        if (typeof window !== 'undefined' && !window.location.href.includes('localhost:9876')) {
+          console.warn('Using default translations. Could not load translation files:', error);
+        }
       });
-      
-      this.translationsLoaded = true;
-    } catch (error) {
-      // Silently fail in tests or if files are not found
-      // Default translations are already loaded
-      if (typeof window !== 'undefined' && !window.location.href.includes('localhost:9876')) {
-        console.warn('Using default translations. Could not load translation files:', error);
-      }
-    }
   }
 
   setLanguage(lang: Language): void {
