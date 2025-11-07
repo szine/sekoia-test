@@ -2,6 +2,7 @@ import { Component, output, signal, ChangeDetectionStrategy, effect, viewChild, 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JokeStorageService } from '../../core/services/joke-storage.service';
+import { JokeCategory } from '../../models/joke.model';
 import { I18nService } from '../../core/services/i18n.service';
 
 @Component({
@@ -21,9 +22,15 @@ export class AddJokeDialogComponent {
   readonly close = output<void>();
   readonly jokeAdded = output<void>();
   
+  readonly jokeType = signal<'single' | 'twopart'>('single');
+  readonly category = signal<JokeCategory>('Custom');
   readonly jokeText = signal<string>('');
+  readonly setup = signal<string>('');
+  readonly delivery = signal<string>('');
   readonly isSubmitting = signal<boolean>(false);
   readonly error = signal<string | null>(null);
+  
+  readonly categories: JokeCategory[] = ['Custom', 'Misc', 'Programming', 'Dark', 'Pun', 'Spooky', 'Christmas'];
   
   private focusableElements: HTMLElement[] = [];
   private triggerElement: HTMLElement | null = null;
@@ -49,8 +56,14 @@ export class AddJokeDialogComponent {
   }
 
   get isValid(): boolean {
-    const text = this.jokeText().trim();
-    return text.length >= 10;
+    if (this.jokeType() === 'single') {
+      const text = this.jokeText().trim();
+      return text.length >= 10;
+    } else {
+      const setup = this.setup().trim();
+      const delivery = this.delivery().trim();
+      return setup.length >= 5 && delivery.length >= 5;
+    }
   }
 
   setTriggerElement(element: HTMLElement): void {
@@ -106,8 +119,27 @@ export class AddJokeDialogComponent {
     }
   }
 
+  onTypeChange(type: 'single' | 'twopart'): void {
+    this.jokeType.set(type);
+    this.error.set(null);
+  }
+
+  onCategoryChange(category: JokeCategory): void {
+    this.category.set(category);
+  }
+
   onInput(value: string): void {
     this.jokeText.set(value);
+    this.error.set(null);
+  }
+
+  onSetupInput(value: string): void {
+    this.setup.set(value);
+    this.error.set(null);
+  }
+
+  onDeliveryInput(value: string): void {
+    this.delivery.set(value);
     this.error.set(null);
   }
 
@@ -116,8 +148,6 @@ export class AddJokeDialogComponent {
       return;
     }
 
-    const text = this.jokeText().trim();
-    
     try {
       this.isSubmitting.set(true);
       this.error.set(null);
@@ -125,7 +155,20 @@ export class AddJokeDialogComponent {
       // Simulate async operation
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      this.jokeStorage.addJoke(text);
+      if (this.jokeType() === 'single') {
+        this.jokeStorage.addJoke({
+          type: 'single',
+          joke: this.jokeText().trim(),
+          category: this.category()
+        });
+      } else {
+        this.jokeStorage.addJoke({
+          type: 'twopart',
+          setup: this.setup().trim(),
+          delivery: this.delivery().trim(),
+          category: this.category()
+        });
+      }
       
       this.jokeAdded.emit();
       this.onClose();
@@ -136,7 +179,11 @@ export class AddJokeDialogComponent {
   }
 
   onClose(): void {
+    this.jokeType.set('single');
+    this.category.set('Custom');
     this.jokeText.set('');
+    this.setup.set('');
+    this.delivery.set('');
     this.error.set(null);
     this.isSubmitting.set(false);
     

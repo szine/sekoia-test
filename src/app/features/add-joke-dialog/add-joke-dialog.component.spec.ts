@@ -132,7 +132,11 @@ describe('AddJokeDialogComponent', () => {
       component.onSubmit();
       tick(300);
 
-      expect(jokeStorageService.addJoke).toHaveBeenCalledWith(jokeText.trim());
+      expect(jokeStorageService.addJoke).toHaveBeenCalledWith({
+        type: 'single',
+        joke: jokeText.trim(),
+        category: 'Custom'
+      });
     }));
 
     it('should emit jokeAdded event on successful submit', fakeAsync(() => {

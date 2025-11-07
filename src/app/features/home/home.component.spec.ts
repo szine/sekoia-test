@@ -98,7 +98,7 @@ describe('HomeComponent', () => {
       id: i,
       type: 'single' as const,
       joke: `Joke ${i}`,
-      category: 'Test',
+      category: 'Misc' as const,
       flags: { nsfw: false, religious: false, political: false, racist: false, sexist: false, explicit: false }
     }));
 
@@ -193,7 +193,7 @@ describe('HomeComponent', () => {
       id: 1,
       type: 'single',
       joke: 'This is a single joke',
-      category: 'Test',
+      category: 'Misc',
       flags: { nsfw: false, religious: false, political: false, racist: false, sexist: false, explicit: false }
     };
 

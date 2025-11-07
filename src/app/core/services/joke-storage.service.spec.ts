@@ -20,20 +20,41 @@ describe('JokeStorageService', () => {
   });
 
   describe('addJoke', () => {
-    it('should add a new joke and return it', () => {
-      const jokeText = 'This is a test joke';
-      const newJoke = service.addJoke(jokeText);
+    it('should add a new single joke and return it', () => {
+      const jokeData = {
+        type: 'single' as const,
+        joke: 'This is a test joke',
+        category: 'Custom' as const
+      };
+      const newJoke = service.addJoke(jokeData);
 
       expect(newJoke).toBeDefined();
-      expect(newJoke.joke).toBe(jokeText);
+      expect(newJoke.joke).toBe(jokeData.joke);
       expect(newJoke.type).toBe('single');
       expect(newJoke.category).toBe('Custom');
       expect(newJoke.id).toBeGreaterThan(0);
     });
 
+    it('should add a twopart joke and return it', () => {
+      const jokeData = {
+        type: 'twopart' as const,
+        setup: 'Why did the chicken cross the road?',
+        delivery: 'To get to the other side!',
+        category: 'Pun' as const
+      };
+      const newJoke = service.addJoke(jokeData);
+
+      expect(newJoke).toBeDefined();
+      expect(newJoke.setup).toBe(jokeData.setup);
+      expect(newJoke.delivery).toBe(jokeData.delivery);
+      expect(newJoke.type).toBe('twopart');
+      expect(newJoke.category).toBe('Pun');
+      expect(newJoke.id).toBeGreaterThan(0);
+    });
+
     it('should add joke to the beginning of the list', () => {
-      const joke1 = service.addJoke('First joke');
-      const joke2 = service.addJoke('Second joke');
+      const joke1 = service.addJoke({ type: 'single', joke: 'First joke', category: 'Custom' });
+      const joke2 = service.addJoke({ type: 'single', joke: 'Second joke', category: 'Custom' });
 
       const jokes = service.getCustomJokes()();
       expect(jokes[0].id).toBe(joke2.id);
@@ -42,7 +63,7 @@ describe('JokeStorageService', () => {
 
     it('should update the signal with new joke', () => {
       const initialCount = service.getCustomJokes()().length;
-      service.addJoke('New joke');
+      service.addJoke({ type: 'single', joke: 'New joke', category: 'Custom' });
       
       expect(service.getCustomJokes()().length).toBe(initialCount + 1);
     });
@@ -56,8 +77,8 @@ describe('JokeStorageService', () => {
     });
 
     it('should return all custom jokes', () => {
-      service.addJoke('Joke 1');
-      service.addJoke('Joke 2');
+      service.addJoke({ type: 'single', joke: 'Joke 1', category: 'Custom' });
+      service.addJoke({ type: 'single', joke: 'Joke 2', category: 'Custom' });
 
       const jokes = service.getCustomJokes()();
       expect(jokes.length).toBe(2);

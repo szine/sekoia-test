@@ -1,11 +1,13 @@
 import { Injectable, signal } from '@angular/core';
-import { Joke } from '../../models/joke.model';
+import { Joke, JokeCategory } from '../../models/joke.model';
 
 export interface CustomJoke {
   id: number;
-  type: 'single';
-  joke: string;
-  category: string;
+  type: 'single' | 'twopart';
+  joke?: string;
+  setup?: string;
+  delivery?: string;
+  category: JokeCategory;
   flags: {
     nsfw: boolean;
     religious: boolean;
@@ -27,12 +29,10 @@ export class JokeStorageService {
     return this.customJokes.asReadonly();
   }
 
-  addJoke(jokeText: string): CustomJoke {
+  addJoke(joke: Omit<CustomJoke, 'id' | 'flags'>): CustomJoke {
     const newJoke: CustomJoke = {
       id: Date.now(),
-      type: 'single',
-      joke: jokeText,
-      category: 'Custom',
+      ...joke,
       flags: {
         nsfw: false,
         religious: false,

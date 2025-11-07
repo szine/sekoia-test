@@ -23,26 +23,122 @@
     </div>
 
     <form class="dialog__form" (submit)="onSubmit(); $event.preventDefault()">
+      <!-- Type Selection -->
       <div class="dialog__field">
-        <label for="joke-input" class="dialog__label">
-          {{ i18n.t().addJoke.jokeLabel }} <span class="dialog__required">*</span>
+        <label class="dialog__label">
+          Type <span class="dialog__required">*</span>
         </label>
-        <textarea
-          #jokeInput
-          id="joke-input"
-          class="dialog__textarea"
-          [value]="jokeText()"
-          (input)="onInput($any($event.target).value)"
-          [placeholder]="i18n.t().addJoke.jokePlaceholder"
-          rows="6"
-          [disabled]="isSubmitting()"
-          required
-          minlength="10"
-        ></textarea>
-        <div class="dialog__hint">
-          {{ i18n.t().addJoke.jokeHint }}
+        <div class="dialog__radio-group">
+          <label class="dialog__radio">
+            <input
+              type="radio"
+              name="jokeType"
+              value="single"
+              [checked]="jokeType() === 'single'"
+              (change)="onTypeChange('single')"
+              [disabled]="isSubmitting()"
+            />
+            <span>Single</span>
+          </label>
+          <label class="dialog__radio">
+            <input
+              type="radio"
+              name="jokeType"
+              value="twopart"
+              [checked]="jokeType() === 'twopart'"
+              (change)="onTypeChange('twopart')"
+              [disabled]="isSubmitting()"
+            />
+            <span>Two-part</span>
+          </label>
         </div>
       </div>
+
+      <!-- Category Selection -->
+      <div class="dialog__field">
+        <label for="category-select" class="dialog__label">
+          Category <span class="dialog__required">*</span>
+        </label>
+        <select
+          id="category-select"
+          class="dialog__select"
+          [value]="category()"
+          (change)="onCategoryChange($any($event.target).value)"
+          [disabled]="isSubmitting()"
+        >
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Single Joke Input -->
+      @if (jokeType() === 'single') {
+        <div class="dialog__field">
+          <label for="joke-input" class="dialog__label">
+            {{ i18n.t().addJoke.jokeLabel }} <span class="dialog__required">*</span>
+          </label>
+          <textarea
+            #jokeInput
+            id="joke-input"
+            class="dialog__textarea"
+            [value]="jokeText()"
+            (input)="onInput($any($event.target).value)"
+            [placeholder]="i18n.t().addJoke.jokePlaceholder"
+            rows="6"
+            [disabled]="isSubmitting()"
+            required
+            minlength="10"
+          ></textarea>
+          <div class="dialog__hint">
+            {{ i18n.t().addJoke.jokeHint }}
+          </div>
+        </div>
+      }
+
+      <!-- Two-part Joke Inputs -->
+      @if (jokeType() === 'twopart') {
+        <div class="dialog__field">
+          <label for="setup-input" class="dialog__label">
+            {{ i18n.t().addJoke.setupLabel }} <span class="dialog__required">*</span>
+          </label>
+          <textarea
+            #jokeInput
+            id="setup-input"
+            class="dialog__textarea"
+            [value]="setup()"
+            (input)="onSetupInput($any($event.target).value)"
+            [placeholder]="i18n.t().addJoke.setupPlaceholder"
+            rows="3"
+            [disabled]="isSubmitting()"
+            required
+            minlength="5"
+          ></textarea>
+          <div class="dialog__hint">
+            {{ i18n.t().addJoke.setupHint }}
+          </div>
+        </div>
+
+        <div class="dialog__field">
+          <label for="delivery-input" class="dialog__label">
+            {{ i18n.t().addJoke.deliveryLabel }} <span class="dialog__required">*</span>
+          </label>
+          <textarea
+            id="delivery-input"
+            class="dialog__textarea"
+            [value]="delivery()"
+            (input)="onDeliveryInput($any($event.target).value)"
+            [placeholder]="i18n.t().addJoke.deliveryPlaceholder"
+            rows="3"
+            [disabled]="isSubmitting()"
+            required
+            minlength="5"
+          ></textarea>
+          <div class="dialog__hint">
+            {{ i18n.t().addJoke.deliveryHint }}
+          </div>
+        </div>
+      }
 
       @if (error()) {
         <div 
