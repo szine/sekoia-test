@@ -26,7 +26,7 @@
       <!-- Type Selection -->
       <div class="dialog__field">
         <label class="dialog__label">
-          Type <span class="dialog__required">*</span>
+          {{ i18n.t().addJoke.typeLabel }} <span class="dialog__required">*</span>
         </label>
         <div class="dialog__radio-group">
           <label class="dialog__radio">
@@ -38,7 +38,7 @@
               (change)="onTypeChange('single')"
               [disabled]="isSubmitting()"
             />
-            <span>Single</span>
+            <span>{{ i18n.t().addJoke.typeSingle }}</span>
           </label>
           <label class="dialog__radio">
             <input
@@ -49,7 +49,7 @@
               (change)="onTypeChange('twopart')"
               [disabled]="isSubmitting()"
             />
-            <span>Two-part</span>
+            <span>{{ i18n.t().addJoke.typeTwopart }}</span>
           </label>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <!-- Category Selection -->
       <div class="dialog__field">
         <label for="category-select" class="dialog__label">
-          Category <span class="dialog__required">*</span>
+          {{ i18n.t().addJoke.categoryLabel }} <span class="dialog__required">*</span>
         </label>
         <select
           id="category-select"
@@ -67,7 +67,7 @@
           [disabled]="isSubmitting()"
         >
           @for (cat of categories; track cat) {
-            <option [value]="cat">{{ cat }}</option>
+            <option [value]="cat">{{ i18n.t().categories[cat] }}</option>
           }
         </select>
       </div>

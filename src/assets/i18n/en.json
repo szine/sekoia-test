@@ -19,7 +19,11 @@
     "resultsHeading": "Jokes"
   },
   "addJoke": {
-    "title": "Add Your Joke",
+    "title": "Add your joke",
+    "typeLabel": "Type",
+    "typeSingle": "Single",
+    "typeTwopart": "Two-part",
+    "categoryLabel": "Category",
     "setupLabel": "Setup",
     "setupPlaceholder": "Enter the setup...",
     "deliveryLabel": "Delivery",
@@ -32,6 +36,15 @@
     "cancel": "Cancel",
     "add": "Add Joke",
     "errorRequired": "Please fill in all required fields"
+  },
+  "categories": {
+    "Custom": "Custom",
+    "Misc": "Misc",
+    "Programming": "Programming",
+    "Dark": "Dark",
+    "Pun": "Pun",
+    "Spooky": "Spooky",
+    "Christmas": "Christmas"
   },
   "toast": {
     "jokeAdded": "Joke added successfully!"

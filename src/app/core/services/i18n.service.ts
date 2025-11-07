@@ -25,6 +25,10 @@ export interface Translations {
   };
   addJoke: {
     title: string;
+    typeLabel: string;
+    typeSingle: string;
+    typeTwopart: string;
+    categoryLabel: string;
     setupLabel: string;
     setupPlaceholder: string;
     deliveryLabel: string;
@@ -37,6 +41,15 @@ export interface Translations {
     cancel: string;
     add: string;
     errorRequired: string;
+  };
+  categories: {
+    Custom: string;
+    Misc: string;
+    Programming: string;
+    Dark: string;
+    Pun: string;
+    Spooky: string;
+    Christmas: string;
   };
   toast: {
     jokeAdded: string;
@@ -53,6 +66,10 @@ const defaultTranslations: Record<Language, Translations> = {
     home: { title: 'WikiJokes', resultsHeading: 'Jokes' },
     addJoke: {
       title: 'Add Your Joke',
+      typeLabel: 'Type',
+      typeSingle: 'Single',
+      typeTwopart: 'Two-part',
+      categoryLabel: 'Category',
       setupLabel: 'Setup',
       setupPlaceholder: 'Enter the setup...',
       deliveryLabel: 'Delivery',
@@ -66,6 +83,15 @@ const defaultTranslations: Record<Language, Translations> = {
       add: 'Add Joke',
       errorRequired: 'Please fill in all required fields'
     },
+    categories: {
+      Custom: 'Custom',
+      Misc: 'Misc',
+      Programming: 'Programming',
+      Dark: 'Dark',
+      Pun: 'Pun',
+      Spooky: 'Spooky',
+      Christmas: 'Christmas'
+    },
     toast: { jokeAdded: 'Joke added successfully!' }
   },
   fr: {
@@ -75,7 +101,11 @@ const defaultTranslations: Record<Language, Translations> = {
     error: { retry: 'Réessayer' },
     home: { title: 'WikiJokes', resultsHeading: 'Blagues' },
     addJoke: {
-      title: 'Ajouter une Blague Personnalisée',
+      title: 'Ajouter une blague',
+      typeLabel: 'Type',
+      typeSingle: 'Simple',
+      typeTwopart: 'En deux parties',
+      categoryLabel: 'Catégorie',
       setupLabel: 'Introduction',
       setupPlaceholder: 'Entrez l\'introduction...',
       deliveryLabel: 'Chute',
@@ -88,6 +118,15 @@ const defaultTranslations: Record<Language, Translations> = {
       cancel: 'Annuler',
       add: 'Ajouter la Blague',
       errorRequired: 'Veuillez remplir tous les champs requis'
+    },
+    categories: {
+      Custom: 'Personnalisée',
+      Misc: 'Divers',
+      Programming: 'Programmation',
+      Dark: 'Noir',
+      Pun: 'Jeu de mots',
+      Spooky: 'Effrayant',
+      Christmas: 'Noël'
     },
     toast: { jokeAdded: 'Blague ajoutée avec succès !' }
   }
@@ -114,16 +153,24 @@ export class I18nService {
 
   private loadTranslations(): void {
     // Skip loading in test environment - use default translations
-    if (typeof window !== 'undefined' && window.location.href.includes('localhost:9876')) {
+    const isTestEnv = typeof window !== 'undefined' && 
+                      (window.location.href.includes('localhost:9876') || 
+                       window.location.href.includes('context.html'));
+    
+    if (isTestEnv) {
       // In test environment, use default translations
       this.translationsLoaded = true;
       return;
     }
 
-    // Use HttpClient to load translations (works with PWA)
+    // Get base path from document base href or default to root
+    const base = document.querySelector('base')?.getAttribute('href') || '/';
+    const basePath = base.endsWith('/') ? base : base + '/';
+
+    // Use HttpClient to load translations (works with PWA and GitHub Pages)
     Promise.all([
-      this.http.get<Translations>('/assets/i18n/en.json').toPromise(),
-      this.http.get<Translations>('/assets/i18n/fr.json').toPromise()
+      this.http.get<Translations>(`${basePath}assets/i18n/en.json`).toPromise(),
+      this.http.get<Translations>(`${basePath}assets/i18n/fr.json`).toPromise()
     ])
       .then(([enData, frData]) => {
         if (enData && frData) {

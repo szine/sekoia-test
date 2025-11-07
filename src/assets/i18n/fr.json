@@ -19,7 +19,11 @@
     "resultsHeading": "Blagues"
   },
   "addJoke": {
-    "title": "Ajouter une Blague Personnalisée",
+    "title": "Ajouter une blague",
+    "typeLabel": "Type",
+    "typeSingle": "Simple",
+    "typeTwopart": "En deux parties",
+    "categoryLabel": "Catégorie",
     "setupLabel": "Introduction",
     "setupPlaceholder": "Entrez l'introduction...",
     "deliveryLabel": "Chute",
@@ -32,6 +36,15 @@
     "cancel": "Annuler",
     "add": "Ajouter la Blague",
     "errorRequired": "Veuillez remplir tous les champs requis"
+  },
+  "categories": {
+    "Custom": "Personnalisée",
+    "Misc": "Divers",
+    "Programming": "Programmation",
+    "Dark": "Noir",
+    "Pun": "Jeu de mots",
+    "Spooky": "Effrayant",
+    "Christmas": "Noël"
   },
   "toast": {
     "jokeAdded": "Blague ajoutée avec succès !"
