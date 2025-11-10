@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1762539599231,
+  "timestamp": 1762766093223,
   "index": "/sekoia-test/index.html",
   "assetGroups": [
     {
@@ -11,11 +11,11 @@
         "ignoreVary": true
       },
       "urls": [
-        "/sekoia-test/chunk-56ZTZ5UW.js",
         "/sekoia-test/chunk-BMBEUUON.js",
+        "/sekoia-test/chunk-GT7VQDI6.js",
         "/sekoia-test/favicon.ico",
         "/sekoia-test/index.html",
-        "/sekoia-test/main-7XTAO27W.js",
+        "/sekoia-test/main-5JJJSN7P.js",
         "/sekoia-test/manifest.webmanifest",
         "/sekoia-test/styles-EDTFIYWM.css"
       ],
@@ -67,11 +67,11 @@
   "hashTable": {
     "/sekoia-test/assets/i18n/en.json": "d377c20b7c635f7962763f7896de543ec7648b28",
     "/sekoia-test/assets/i18n/fr.json": "14fd96fd596af3dcf5df841abe3e05cff9edae34",
-    "/sekoia-test/chunk-56ZTZ5UW.js": "94702cccabe5210fc58ecced371fb1a9dc5f2dda",
     "/sekoia-test/chunk-BMBEUUON.js": "e8a92a53c98d3b06de93f21a5902bc3d329f4658",
+    "/sekoia-test/chunk-GT7VQDI6.js": "b89f85690e8456024fa1a27086bb009c9a361c95",
     "/sekoia-test/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/sekoia-test/index.html": "0251df04332b767beda4b3b46187f388453a0265",
-    "/sekoia-test/main-7XTAO27W.js": "dc9c9c14808d58929b7e3117603c417e536ee89f",
+    "/sekoia-test/index.html": "ce4ca40187b7dc8f567f8137707f9e2b52464050",
+    "/sekoia-test/main-5JJJSN7P.js": "de321306f3e1c8a19a2a15c5b69357bd574ec2c5",
     "/sekoia-test/manifest.webmanifest": "da5facb82ffa86adcf93b3cacde8def2a36d45ec",
     "/sekoia-test/styles-EDTFIYWM.css": "1201c8ca13c0ecb6d1639004f7c566c9251c346a"
   },
