@@ -76,12 +76,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
     // Refresh jokes when language changes
+    let isFirstRun = true;
     effect(() => {
       const currentLang = this.i18n.language();
-      // Skip the initial load (will be handled by ngOnInit)
-      if (!this.isInitialLoad()) {
-        this.onSearch(this.query());
+      // Skip the first run entirely (will be handled by ngOnInit)
+      if (isFirstRun) {
+        isFirstRun = false;
+        return;
       }
+      this.onSearch(this.query());
     });
   }
 
